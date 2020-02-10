@@ -2,9 +2,6 @@ package com.vgg.exceptions;
 
 
 
-/**
- * Created by Obinna.Onwuakagba on 7/6/2019.
- */
 public class AbstractException extends RuntimeException {
     String code;
 

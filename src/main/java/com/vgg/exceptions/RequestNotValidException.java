@@ -3,9 +3,7 @@ package com.vgg.exceptions;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 
-/**
- * Created by Jideobi.Onuora on 3/14/2017.
- */
+
 public class RequestNotValidException extends RuntimeException {
 
     private final BindingResult bindingResult;

@@ -28,10 +28,28 @@ public class DBInitializeConfig {
 					"username varchar(30) not null," +
 					"password varchar(30) not null)"
 					);
+			statement.execute("DROP TABLE IF EXISTS Project");
+			statement.executeUpdate(
+					"CREATE TABLE Project(" +
+							"id INTEGER  Primary key, " +
+							"name varchar(100) not null," +
+							"description varchar(500) not null, " +
+							"completed bit) "
+			);
+			statement.execute("DROP TABLE IF EXISTS Actions");
+			statement.executeUpdate(
+					"CREATE TABLE Actions(" +
+							"id INTEGER  Primary key, " +
+							"note varchar(100) not null," +
+							"description varchar(500) not null, " +
+							"project_id INTEGER," +
+							"CONSTRAINT fk_project FOREIGN KEY (project_id)\n" +
+							"    REFERENCES Project(id) ) "
+			);
 			statement.executeUpdate(
 					"INSERT INTO UsersTable " +
 							"(username,password) " +
-							"VALUES " + "('toks','toks123')"
+							"VALUES " + "('toks','toks')"
 			);
 			statement.close();
 			connection.close();

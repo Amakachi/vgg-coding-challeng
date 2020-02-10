@@ -2,9 +2,7 @@ package com.vgg.exceptions;
 
 import org.apache.commons.lang.StringUtils;
 
-/**
- * Created by tobi.oladimeji on 06/25/2019
- */
+
 public class InvalidEnumException extends RuntimeException {
 
     private Object rejected;

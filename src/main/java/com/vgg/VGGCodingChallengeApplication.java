@@ -26,7 +26,7 @@ public class VGGCodingChallengeApplication {
     	UserDto loginModel =new UserDto();
     	loginModel.setPassword("toks123");
     	loginModel.setUsername("toks");
-    	 System.out.println(userService.findOne(loginModel.getUsername()).getId());
+//    	 System.out.println(userService.findOne(loginModel.getUsername()).getId());
     	
     }
 }

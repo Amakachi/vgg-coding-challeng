@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import com.vgg.exceptions.RequestNotValidException;
+import com.vgg.exceptions.impl.AccessDeniedException;
 import com.vgg.exceptions.impl.BadRequestException;
 import com.vgg.exceptions.impl.DuplicateException;
 import com.vgg.exceptions.impl.NotFoundException;
@@ -19,9 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
@@ -30,7 +29,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -48,7 +46,7 @@ public class ApiAdvice {
 
     @ExceptionHandler({HttpMessageNotReadableException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public List<Error> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+    public ApiResponse<Void> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
 
         Throwable cause = e.getMostSpecificCause();
         List<Error> errors = new ArrayList<>();
@@ -93,13 +91,13 @@ public class ApiAdvice {
             errors.add(new Error(field, error));
         }
 
-        return errors;
+        return new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), "Bad Request", errors);
     }
 
 
     @ExceptionHandler({MethodArgumentNotValidException.class, BindException.class, RequestNotValidException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public List<Error> handleValidationException(Exception e) {
+    public ApiResponse<Void> handleValidationException(Exception e) {
         //logger.error("{}",e.getLocalizedMessage());
 
         BindingResult result;
@@ -135,39 +133,33 @@ public class ApiAdvice {
                             errors.add(new Error(error.getField(), messageSource.getMessage(resolvable, Locale.ENGLISH)));
                         }
                 );
-
-        return errors;
+        return new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), "Bad Request", errors);
+       // return errors;
     }
 
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<String> handleExceptionAdvice(BadRequestException e) {
-
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        return responseEntity;
+    public ApiResponse<Void> handleExceptionAdvice(BadRequestException e) {
+        return new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), e.getMessage(), null);
     }
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<String> handleExceptionAdvice(NotFoundException e) {
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
-        return responseEntity;
+    public ApiResponse<Void> handleExceptionAdvice(NotFoundException e) {
+        return new ApiResponse<>(HttpStatus.NOT_FOUND.value(), e.getMessage(), null);
     }
 
     @ExceptionHandler(DuplicateException.class)
-    public ResponseEntity<String> handleExceptionAdvice(DuplicateException e) {
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
-        return responseEntity;
+    public ApiResponse<Void> handleExceptionAdvice(DuplicateException e) {
+        return new ApiResponse<>(HttpStatus.CONFLICT.value(), e.getMessage(), null);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<String> handleExceptionAdvice(AccessDeniedException e) {
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
-        return responseEntity;
+    public ApiResponse<Void> handleExceptionAdvice(AccessDeniedException e) {
+        return new ApiResponse<>(HttpStatus.UNAUTHORIZED.value(), e.getMessage(), null);
     }
 
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<String> handleExceptionAdvice(AuthenticationException e) {
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>(e.getMessage()+ ". Invalid Username or password", HttpStatus.CONFLICT);
-        return responseEntity;
+    public ApiResponse<Void> handleExceptionAdvice(AuthenticationException e) {
+        return new ApiResponse<>(HttpStatus.UNAUTHORIZED.value(), "Invalid username on password", null);
     }
 
 

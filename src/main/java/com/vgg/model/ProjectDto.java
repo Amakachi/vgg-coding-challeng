@@ -1,9 +1,12 @@
 package com.vgg.model;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.validation.constraints.NotBlank;
 
 public class ProjectDto {
 
+    @ApiModelProperty(hidden = true)
     private Integer id;
     @NotBlank
     private String name;

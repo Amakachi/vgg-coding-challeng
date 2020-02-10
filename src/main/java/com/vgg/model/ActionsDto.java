@@ -1,15 +1,22 @@
 package com.vgg.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
+import springfox.documentation.annotations.ApiIgnore;
+
 import javax.validation.constraints.NotBlank;
 
 public class ActionsDto {
 
+    @ApiModelProperty(hidden = true)
     private Integer id;
     @NotBlank
     private String note;
     @NotBlank
     private String description;
-
+    @ApiModelProperty(hidden = true)
+    @JsonIgnore
+    private Project project;
 
     public Integer getId() {
         return id;
@@ -35,5 +42,11 @@ public class ActionsDto {
         this.description = description;
     }
 
+    public Project getProject() {
+        return project;
+    }
 
+    public void setProject(Project project) {
+        this.project = project;
+    }
 }

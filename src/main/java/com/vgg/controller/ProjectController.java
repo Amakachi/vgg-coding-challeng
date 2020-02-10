@@ -75,7 +75,7 @@ public class ProjectController {
     public ApiResponse<Actions> updateByProjectAndAction(@PathVariable int projectId, @PathVariable int actionId, @Valid @RequestBody ActionsDto actionsDto){
         var action = actionsService.findByIdAndProjectId(actionId, projectId);
         if (action == null) throw new NotFoundException(HttpStatus.NOT_FOUND.toString(), "Project and Action not found");
-        actionsDto.setId(actionId);
+        actionsDto.setId(action.getId());
         //actionsDto.setProject(projectId);
         return new ApiResponse<>(HttpStatus.OK.value(), "Project fetched successfully.",actionsService.update(actionsDto));
     }
@@ -84,7 +84,7 @@ public class ProjectController {
     public ApiResponse<Void> deleteAction(@PathVariable int projectId, @PathVariable int actionId) {
         var action = actionsService.findByIdAndProjectId(actionId, projectId);
         if (action == null) throw new NotFoundException(HttpStatus.NOT_FOUND.toString(), "Project and Action not found");
-        actionsService.delete(actionId);
+        actionsService.delete(action.getId());
         return new ApiResponse<>(HttpStatus.OK.value(), "Action deleted successfully.", null);
     }
 

@@ -46,11 +46,11 @@ public class DBInitializeConfig {
 							"CONSTRAINT fk_project FOREIGN KEY (project_id)\n" +
 							"    REFERENCES Project(id) ) "
 			);
-			statement.executeUpdate(
-					"INSERT INTO UsersTable " +
-							"(username,password) " +
-							"VALUES " + "('toks','toks')"
-			);
+//			statement.executeUpdate(
+//					"INSERT INTO UsersTable " +
+//							"(username,password) " +
+//							"VALUES " + "('toks','toks')"
+//			);
 			statement.close();
 			connection.close();
 		}

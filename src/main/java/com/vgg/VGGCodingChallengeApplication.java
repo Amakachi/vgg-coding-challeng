@@ -23,9 +23,9 @@ public class VGGCodingChallengeApplication {
     	  
     	  UserService userService =
     		  ctx.getBean("userService", UserService.class);
-    	UserDto loginModel =new UserDto();
-    	loginModel.setPassword("toks123");
-    	loginModel.setUsername("toks");
+//    	UserDto loginModel =new UserDto();
+//    	loginModel.setPassword("toks123");
+//    	loginModel.setUsername("toks");
 //    	 System.out.println(userService.findOne(loginModel.getUsername()).getId());
     	
     }

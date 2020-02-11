@@ -53,7 +53,7 @@ public class ProjectController {
 
     @PostMapping("/{projectId}/actions")
     public ApiResponse<Actions> saveAction(@PathVariable int projectId, @Valid @RequestBody ActionsDto actionsDto){
-        var project = projectService.findById(projectId);
+        Project project = projectService.findById(projectId);
         if (project == null) throw new NotFoundException(HttpStatus.NOT_FOUND.toString(), "Project not found");
         actionsDto.setProject(project);
         return new ApiResponse<>(HttpStatus.OK.value(), "Actions saved successfully.",actionsService.save(actionsDto));
@@ -61,7 +61,7 @@ public class ProjectController {
 
     @GetMapping("/projects/{projectId}/actions")
     public ApiResponse<Actions> getOneAction(@PathVariable int projectId) {
-        var project = projectService.findById(projectId);
+        Project project = projectService.findById(projectId);
         if (project == null) throw new NotFoundException(HttpStatus.NOT_FOUND.toString(), "Project not found");
         return new ApiResponse<>(HttpStatus.OK.value(), "Project fetched successfully.", actionsService.findByProjectId(projectId));
     }
@@ -73,7 +73,7 @@ public class ProjectController {
 
     @PutMapping("/projects/{projectId}/actions/{actionId}")
     public ApiResponse<Actions> updateByProjectAndAction(@PathVariable int projectId, @PathVariable int actionId, @Valid @RequestBody ActionsDto actionsDto){
-        var action = actionsService.findByIdAndProjectId(actionId, projectId);
+        Actions action = actionsService.findByIdAndProjectId(actionId, projectId);
         if (action == null) throw new NotFoundException(HttpStatus.NOT_FOUND.toString(), "Project and Action not found");
         actionsDto.setId(action.getId());
         //actionsDto.setProject(projectId);
@@ -82,7 +82,7 @@ public class ProjectController {
 
     @DeleteMapping("/projects/{projectId}/actions/{actionId}")
     public ApiResponse<Void> deleteAction(@PathVariable int projectId, @PathVariable int actionId) {
-        var action = actionsService.findByIdAndProjectId(actionId, projectId);
+        Actions action = actionsService.findByIdAndProjectId(actionId, projectId);
         if (action == null) throw new NotFoundException(HttpStatus.NOT_FOUND.toString(), "Project and Action not found");
         actionsService.delete(action.getId());
         return new ApiResponse<>(HttpStatus.OK.value(), "Action deleted successfully.", null);

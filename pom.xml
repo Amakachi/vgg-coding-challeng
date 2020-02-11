@@ -15,7 +15,7 @@
     </parent>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>8</java.version>
         <start-class>com.vgg.VGGCodingChallengeApplication</start-class>
     </properties>
 
